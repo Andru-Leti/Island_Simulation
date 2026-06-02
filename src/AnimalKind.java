@@ -21,6 +21,7 @@ public enum AnimalKind {
     public final int maxSpeed;
     public final double foodForFull;
 
+
     AnimalKind(double weight, int maxAnimals, int maxSpeed, double foodForFull) {
         this.weight = weight;
         this.maxAnimals = maxAnimals;
