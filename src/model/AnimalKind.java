@@ -1,3 +1,4 @@
+package model;
 
 public enum AnimalKind {
     WOLF(50, 30, 3, 8),

@@ -1,3 +1,4 @@
+package model;
 
 public abstract class Animal {
 
@@ -8,13 +9,16 @@ public abstract class Animal {
 
     private double foodKg;
 
-    protected Animal(AnimalKind animalKind, int x, int y, double foodKg) {
+    protected Animal(AnimalKind animalKind, int x, int y) {
         this.animalKind = animalKind;
         this.x = x;
         this.y = y;
         this.foodKg = animalKind.foodForFull;
     }
 
+    public AnimalKind getAnimalKind() {
+        return animalKind;
+    }
 
     public int getX() {
         return x;
