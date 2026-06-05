@@ -2,7 +2,7 @@ package model;
 
 public enum AnimalKind {
     WOLF(50, 30, 3, 8),
-    BOA(15, 30, 1, 3),
+    SNAKE(15, 30, 1, 3),
     FOX(8, 30, 2, 2),
     BEAR(500, 5, 2, 80),
     EAGLE(6, 20, 3, 1),
