@@ -6,6 +6,7 @@ public enum AnimalKind {
     FOX(8, 30, 2, 2),
     BEAR(500, 5, 2, 80),
     EAGLE(6, 20, 3, 1),
+
     HORSE(400, 20, 4, 60),
     DEER(300, 20, 4, 50),
     RABBIT(2, 150, 2, 0.45),

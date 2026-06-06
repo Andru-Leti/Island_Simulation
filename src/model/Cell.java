@@ -12,10 +12,9 @@ public class Cell {
 
     List<Animal> animals = new ArrayList<>();
 
-    public Cell(int x, int y, List<Animal> animals) {
+    public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        this.animals = animals;
     }
 
     public int getX() {
@@ -30,11 +29,12 @@ public class Cell {
         return grass;
     }
 
+    // подумать для многопоточки что возвращать
     public List<Animal> getAnimals() {
         return animals;
     }
 
-    public boolean tryAdd(Animal animal){
+    public synchronized boolean tryAdd(Animal animal){
         if(isFullForKind(animal)){
             return false;
         }
