@@ -34,6 +34,9 @@ public abstract class Animal {
         this.x = x;
         this.y = y;
     }
+    public void setFoodKg(double foodKg) {
+        this.foodKg = foodKg;
+    }
 
     public abstract void reproduce();
     public abstract void move(Animal animal, Island island);
