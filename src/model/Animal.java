@@ -39,7 +39,7 @@ public abstract class Animal {
     }
 
     public abstract void reproduce();
-    public abstract void move(Animal animal, Island island);
+    public abstract void move(Animal animal, Cell currentCell);
     public abstract void eat();
 
     // своя реализация

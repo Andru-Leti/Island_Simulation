@@ -12,7 +12,7 @@ public abstract class Predator extends Animal {
     }
 
     @Override
-    public void move(Animal animal, Island island) {
+    public void move(Animal animal, Cell currentCell){
 
     }
 

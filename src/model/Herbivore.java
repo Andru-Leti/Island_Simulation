@@ -5,9 +5,6 @@ import service.MoveService;
 
 public abstract class Herbivore extends Animal {
 
-    EatService eatService;
-    MoveService moveService = new MoveService();
-
     protected Herbivore(AnimalKind animalKind, int x, int y) {
         super(animalKind, x, y);
     }
@@ -18,8 +15,8 @@ public abstract class Herbivore extends Animal {
     }
 
     @Override
-    public void move(Animal animal, Island island) {
-        moveService.move(animal, island);
+    public void move(Animal animal, Cell currentCell) {
+
     }
 
     @Override
