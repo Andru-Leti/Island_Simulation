@@ -58,7 +58,7 @@ public class Cell {
         return animals.size();
     }
 
-    private boolean isFullForKind(Animal animal) {
+    public synchronized boolean isFullForKind(Animal animal) {
         int howMany = 0;
         for (Animal a : animals) {
             if (a.getAnimalKind() == animal.getAnimalKind()) {
