@@ -7,16 +7,16 @@ public enum AnimalKind {
     BEAR(500, 5, 2, 80, 2),
     EAGLE(6, 20, 3, 1, 3),
 
-    HORSE(400, 20, 4, 60, 1),
-    DEER(300, 20, 4, 50, 1),
+    HORSE(400, 20, 4, 60, 5),
+    DEER(300, 20, 4, 50, 5),
     RABBIT(2, 150, 2, 0.45, 10),
-    MOUSE(0.05, 500, 1, 0.01, 12),
-    GOAT(60, 140, 3, 10, 2),
-    SHEEP(70, 140, 3, 15, 2),
+    MOUSE(0.05, 500, 1, 0.01, 20),
+    GOAT(60, 140, 3, 10, 4),
+    SHEEP(70, 140, 3, 15, 4),
     BOAR(400, 50, 2, 50, 5),
-    BUFFALO(700, 10, 3, 100, 1),
+    BUFFALO(700, 10, 3, 100, 5),
     DUCK(1, 200, 4, 0.15, 8),
-    CATERPILLAR(0.01, 1000, 0, 0, 20);
+    CATERPILLAR(0.01, 1000, 0, 0, 100);
 
     public final double weight;
     public final int maxAnimals;

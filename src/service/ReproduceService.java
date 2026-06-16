@@ -14,11 +14,7 @@ import java.util.stream.Collectors;
 
 public class ReproduceService {
 
-    private AnimalsFactory factory;
-
-    public ReproduceService(AnimalsFactory factory) {
-        this.factory = factory;
-    }
+    public ReproduceService() {}
 
     public void reproduce(Cell cell){
         Map<AnimalKind, List<Animal>> animalsByKind = cell.getAnimalsCopy().stream()
@@ -50,7 +46,7 @@ public class ReproduceService {
         parent2.setFoodKg(parent2.getFoodKg() - energyCost);
         int born = 0;
         for (int i = 0; i < offspringCount; i++) {
-            Animal baby = factory.create(kind, cell.getX(), cell.getY());
+            Animal baby = AnimalsFactory.create(kind, cell.getX(), cell.getY());
             baby.setFoodKg(kind.foodForFull);
 
             if (cell.tryAdd(baby)) {

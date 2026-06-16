@@ -1,6 +1,9 @@
 package service;
 
+import model.Animal;
 import model.Island;
+import model.Cell;
+import model.animals.TickCounters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,50 +15,165 @@ public class LifeCycle {
 
     private final Island island;
     private final ExecutorService executorService;
+    private final int fixedThreadPool;
+    private final int grassGrowth;
 
-    // продумать выращивание травы с каждым тактом
-    private final int grass;
+    private final EatService eatService;
+    private final MoveService moveService;
+    private final ReproduceService reproduceService;
 
-    public LifeCycle(Island island, int fixedThreadPool, int grass) {
+    public LifeCycle(Island island, int fixedThreadPool, int grassGrowth,
+                     EatService eatService, MoveService moveService, ReproduceService reproduceService) {
         this.island = island;
+        this.fixedThreadPool = fixedThreadPool;
+        this.grassGrowth = grassGrowth;
+        this.eatService = eatService;
+        this.moveService = moveService;
+        this.reproduceService = reproduceService;
         this.executorService = Executors.newFixedThreadPool(fixedThreadPool, r -> {
-            Thread thread = new Thread("island-thread");
+            Thread thread = new Thread(r, "island-thread");
             return thread;
         });
-        this.grass = grass;
     }
 
     public void runTick() throws InterruptedException {
+        TickCounters.reset();
         runReproduce();
         runEat();
         runMove();
         phaseStarve();
-        // выращивание травы
-        // invokeall
+        growGrass();
     }
 
     private void runReproduce() throws InterruptedException {
         List<Callable<Void>> tasks = new ArrayList<>();
-        for(int i =0; i < island.getWidth(); i++){
-            for(int j = 0; j < island.getHeight(); j++){
-                int x = j;
-                // tasks.add(()); - разобраться самому
+        for(int x = 0; x < island.getWidth(); x++){
+            for(int y = 0; y < island.getHeight(); y++){
+                int finalX = x;
+                int finalY = y;
+                tasks.add(() ->{
+                        Cell cell = island.getCell(finalX, finalY);
+                        reproduceService.reproduce(cell);
+                        return null;
+                });
             }
         }
         executorService.invokeAll(tasks);
     }
 
-    private void runEat() {
+    private void runEat() throws InterruptedException {
+        List<Callable<Void>> tasks = new ArrayList<>();
 
+        for (int x = 0; x < island.getWidth(); x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                int finalX = x;
+                int finalY = y;
+                tasks.add(() -> {
+                    Cell cell = island.getCell(finalX, finalY);
+                    for (Animal animal : cell.getAnimalsCopy()) {
+                        eatService.eat(animal, cell);
+                    }
+                    return null;
+                });
+            }
+        }
+
+        executorService.invokeAll(tasks);
     }
 
-    private void runMove() {
+    private void runMove() throws InterruptedException {
+        List<Callable<Void>> tasks = new ArrayList<>();
 
+        for (int x = 0; x < island.getWidth(); x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                int finalX = x;
+                int finalY = y;
+                tasks.add(() -> {
+                    Cell cell = island.getCell(finalX, finalY);
+                    for (Animal animal : cell.getAnimalsCopy()) {
+                        moveService.move(animal, cell);
+                    }
+                    return null;
+                });
+            }
+        }
+
+        executorService.invokeAll(tasks);
     }
 
-    private void phaseStarve(){
-        // 1. если животное голодное, то оно умирает
+    private void phaseStarve() throws InterruptedException {
+        List<Callable<Void>> tasks = new ArrayList<>();
+
+        for (int x = 0; x < island.getWidth(); x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                int finalX = x;
+                int finalY = y;
+                tasks.add(() -> {
+                    Cell cell = island.getCell(finalX, finalY);
+                    applyHungerToCell(cell);
+                    return null;
+                });
+            }
+        }
+
+        executorService.invokeAll(tasks);
     }
 
-    // Необходимо остановить ExecutorService
+    private void applyHungerToCell(Cell cell) {
+        double hungerRate = 0.1;
+
+        for (Animal animal : cell.getAnimalsCopy()) {
+            if (!cell.containsAnimal(animal)) {
+                continue;
+            }
+
+            if (animal.getAnimalKind().foodForFull == 0) {
+                continue;
+            }
+
+            double hungerLoss = animal.getAnimalKind().foodForFull * hungerRate;
+            animal.setFoodKg(animal.getFoodKg() - hungerLoss);
+
+            if (animal.getFoodKg() <= 0) {
+                cell.removeAnimal(animal);
+                TickCounters.deadAnimals++;
+            }
+        }
+    }
+
+    private void growGrass() throws InterruptedException {
+        List<Callable<Void>> tasks = new ArrayList<>();
+
+        for (int x = 0; x < island.getWidth(); x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                int finalX = x;
+                int finalY = y;
+                tasks.add(() -> {
+                    Cell cell = island.getCell(finalX, finalY);
+                    int currentGrass = cell.getGrass();
+
+                    int growth;
+                    if (currentGrass < 50) {
+                        growth = grassGrowth * 2;
+                    } else if (currentGrass < 100) {
+                        growth = grassGrowth;
+                    } else if (currentGrass < 150) {
+                        growth = grassGrowth / 2;
+                    } else {
+                        growth = 1;
+                    }
+
+                    int newGrass = Math.min(currentGrass + growth, 200);
+                    cell.setGrass(newGrass);
+                    return null;
+                });
+            }
+        }
+
+        executorService.invokeAll(tasks);
+    }
+
+    public void shutdown() {
+        executorService.shutdown();
+    }
 }

@@ -18,7 +18,7 @@ public class EatTable {
         put(WOLF, HORSE, 10);
         put(WOLF, DEER, 15);
         put(WOLF, RABBIT, 60);
-        put(WOLF, MOUSE, 80);
+        put(WOLF, MOUSE, 90);
         put(WOLF, GOAT, 60);
         put(WOLF, SHEEP, 70);
         put(WOLF, BOAR, 15);
@@ -48,7 +48,7 @@ public class EatTable {
 
         put(EAGLE, FOX, 10);
         put(EAGLE, RABBIT, 90);
-        put(EAGLE, MOUSE, 90);
+        put(EAGLE, MOUSE, 70);
         put(EAGLE, DUCK, 80);
 
         put(MOUSE, CATERPILLAR, 90);

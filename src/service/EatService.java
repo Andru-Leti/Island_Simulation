@@ -9,35 +9,32 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EatService {
 
-
-    public void eat(Animal animal, Cell cell){
-        if (isFoodFull(animal)){ return;}
+    public void eat(Animal animal, Cell cell) {
+        if (isFoodFull(animal)) {
+            return;
+        }
 
         AnimalKind predatorKind = animal.getAnimalKind();
-        if(EatTable.hasAnyAnimalPrey(predatorKind)){
-            for(Animal prey: cell.getAnimalsCopy()){
+        int eatAttempts = 0;
+        int maxAttempts = 3;
+
+        if (EatTable.hasAnyAnimalPrey(predatorKind)) {
+            for (Animal prey : cell.getAnimalsCopy()) {
                 if (prey == animal) continue;
                 if (isFoodFull(animal)) break;
+                if (eatAttempts >= maxAttempts) break;
 
                 int chance = EatTable.get(predatorKind, prey.getAnimalKind());
-                if(chance > 0 && ThreadLocalRandom.current().nextInt(100) < chance){
+                if (chance > 0 && ThreadLocalRandom.current().nextInt(100) < chance) {
                     eatPrey(animal, prey, cell);
+                    eatAttempts++;
                 }
             }
         }
 
-        if (!isFoodFull(animal) && cell.getGrass() > 0 && EatTable.getAgainstPlant(predatorKind) > 0){
+        if (!isFoodFull(animal) && cell.getGrass() > 0 && EatTable.getAgainstPlant(predatorKind) > 0) {
             eatPlant(animal, cell);
         }
-
-        /*
-        1. Проверка на сытость
-        1. Определяем, кто пытается поесть
-        2. Если травоядное - одно поведение (смотрим, есть ли трава на клетке)
-        3. Получаем животных все, если среди них есть еда для хищника, то смотрим в eatTable
-        4. Если вероятность больше 0 -> мы кидаем рандом на это животное и либо съедаем
-        5. Если мы его съедаем, то надо обновить текущее насыщение( если не съедаем, то походу минисуем кг)
-         */
     }
 
     private boolean isFoodFull(Animal animal){

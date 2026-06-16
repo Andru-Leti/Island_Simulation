@@ -24,4 +24,14 @@ public class Island {
         return cells[x][y];
     }
 
+    public int getTotalAnimals() {
+        int total = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                total += cells[x][y].getAnimalCount();
+            }
+        }
+        return total;
+    }
+
 }

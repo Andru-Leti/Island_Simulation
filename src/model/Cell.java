@@ -8,7 +8,7 @@ public class Cell {
 
     private final int x;
     private final int y;
-    private int grass = 5;
+    private int grass = 200;
     private final List<Animal> animals = new ArrayList<>();
 
     public Cell(int x, int y) {
