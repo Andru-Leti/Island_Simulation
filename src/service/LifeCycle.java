@@ -4,12 +4,16 @@ import model.Animal;
 import model.Island;
 import model.Cell;
 import model.animals.TickCounters;
+import service.eating.EatService;
+import service.movement.MoveService;
+import service.reproduction.ReproduceService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LifeCycle {
 
@@ -152,18 +156,18 @@ public class LifeCycle {
                     Cell cell = island.getCell(finalX, finalY);
                     int currentGrass = cell.getGrass();
 
-                    int growth;
+                    int baseGrowth = grassGrowth;
+
+                    double randomFactor = 0.7 + ThreadLocalRandom.current().nextDouble(0.6);
+                    int growth = (int) Math.round(baseGrowth * randomFactor);
+
                     if (currentGrass < 50) {
-                        growth = grassGrowth * 2;
-                    } else if (currentGrass < 100) {
-                        growth = grassGrowth;
-                    } else if (currentGrass < 150) {
-                        growth = grassGrowth / 2;
-                    } else {
-                        growth = 1;
+                        growth = growth * 2;
+                    } else if (currentGrass > 150) {
+                        growth = growth / 2;
                     }
 
-                    int newGrass = Math.min(currentGrass + growth, 200);
+                    int newGrass = Math.min(currentGrass + Math.max(1, growth), 200);
                     cell.setGrass(newGrass);
                     return null;
                 });

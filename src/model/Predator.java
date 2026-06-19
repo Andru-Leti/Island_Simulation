@@ -6,18 +6,4 @@ public abstract class Predator extends Animal {
         super(animalKind, x, y);
     }
 
-    @Override
-    public void reproduce() {
-
-    }
-
-    @Override
-    public void move(Animal animal, Cell currentCell){
-
-    }
-
-    @Override
-    public void eat() {
-
-    }
 }

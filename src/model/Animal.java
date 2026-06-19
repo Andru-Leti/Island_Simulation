@@ -37,17 +37,4 @@ public abstract class Animal {
     public void setFoodKg(double foodKg) {
         this.foodKg = foodKg;
     }
-
-    public abstract void reproduce();
-    public abstract void move(Animal animal, Cell currentCell);
-    public abstract void eat();
-
-    // своя реализация
-    public void hungerTick(){
-
-    }
-
-    public boolean isDead(){
-        return foodKg <= 0;
-    }
 }

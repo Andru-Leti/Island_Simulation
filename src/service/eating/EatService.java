@@ -1,4 +1,4 @@
-package service;
+package service.eating;
 
 import model.Animal;
 import model.AnimalKind;
@@ -9,6 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EatService {
 
+    /**
+     * Основной метод: животное пытается поесть в указанной клетке.
+     * Ограничение на количество попыток — чтобы избежать бесконечного поедания мелких жертв.
+     */
     public void eat(Animal animal, Cell cell) {
         if (isFoodFull(animal)) {
             return;
@@ -41,6 +45,10 @@ public class EatService {
         return animal.getFoodKg() == animal.getAnimalKind().foodForFull;
     }
 
+    /**
+     * Поедание жертвы: хищник съедает часть или всю жертву,
+     * после чего жертва удаляется из клетки.
+     */
     private void eatPrey(Animal predator, Animal prey, Cell cell){
         if (!cell.containsAnimal(prey)) {
             return;
@@ -59,13 +67,11 @@ public class EatService {
         TickCounters.eatenAnimals++;
     }
 
-    private void eatPlant(Animal animal, Cell cell){
+    private void eatPlant(Animal animal, Cell cell) {
         double needed = animal.getAnimalKind().foodForFull - animal.getFoodKg();
-        int grassAvailable = cell.getGrass();
-        int grassToEat = (int) Math.min(needed, grassAvailable);
+        int grassToEat = (int) Math.min(needed, cell.getGrass());
 
-        if (grassToEat > 0) {
-            cell.setGrass(grassAvailable - grassToEat);
+        if (grassToEat > 0 && cell.consumeGrass(grassToEat)) {
             animal.setFoodKg(animal.getFoodKg() + grassToEat);
         }
     }

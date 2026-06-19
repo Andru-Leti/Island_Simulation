@@ -1,4 +1,4 @@
-package service;
+package service.movement;
 
 import model.Animal;
 import model.Cell;
@@ -52,11 +52,6 @@ public class MoveService {
      * Безопасно перемещает животное из одной клетки в другую.
      * Для предотвращения deadlock'а блокировка клеток происходит в строгом порядке,
      * определяемом по hashCode().
-     *
-     * @param animal перемещаемое животное
-     * @param from   исходная клетка
-     * @param to     целевая клетка
-     * @return true если перемещение успешно, false если целевая клетка переполнена
      */
     private boolean relocate(Animal animal, Cell from, Cell to) {
         Cell first = from.hashCode() < to.hashCode() ? from : to;

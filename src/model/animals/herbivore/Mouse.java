@@ -12,8 +12,4 @@ public class Mouse extends Herbivore {
         return new Mouse(x, y);
     }
 
-    @Override
-    public void eat() {
-        super.eat();
-    }
 }

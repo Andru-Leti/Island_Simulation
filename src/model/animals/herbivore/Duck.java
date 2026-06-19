@@ -13,8 +13,4 @@ public class Duck extends Herbivore {
         return new Duck(x, y);
     }
 
-    @Override
-    public void eat() {
-        // реализация логигки и для травоядных и для хищников
-    }
 }

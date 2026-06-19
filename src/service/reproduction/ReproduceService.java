@@ -1,4 +1,4 @@
-package service;
+package service.reproduction;
 
 import model.Animal;
 import model.AnimalKind;
@@ -6,17 +6,25 @@ import model.Cell;
 import model.animals.AnimalsFactory;
 import model.animals.TickCounters;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис, отвечающий за размножение животных.
+ * Животные размножаются парами одного вида при соблюдении условий:
+ * - сытость родителей > 50%
+ * - есть место в клетке
+ * - вероятность 50%
+ * Родители тратят 30% энергии, детёныш рождается сытым.
+ */
 public class ReproduceService {
 
     public ReproduceService() {}
 
     public void reproduce(Cell cell){
+        // Группируем всех животных в клетке по видам
         Map<AnimalKind, List<Animal>> animalsByKind = cell.getAnimalsCopy().stream()
                 .collect(Collectors.groupingBy(Animal::getAnimalKind));
 

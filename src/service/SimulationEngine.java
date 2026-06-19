@@ -2,6 +2,9 @@ package service;
 
 import model.Island;
 import model.animals.TickCounters;
+import service.eating.EatService;
+import service.movement.MoveService;
+import service.reproduction.ReproduceService;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

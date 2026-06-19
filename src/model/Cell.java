@@ -8,7 +8,7 @@ public class Cell {
 
     private final int x;
     private final int y;
-    private int grass = 200;
+    private int grass = 100;
     private final List<Animal> animals = new ArrayList<>();
 
     public Cell(int x, int y) {
@@ -25,6 +25,10 @@ public class Cell {
         this.grass = Math.max(0, grass);
     }
 
+    /**
+     * Безопасно уменьшает количество травы в клетке.
+     * @param amount сколько кг травы нужно съесть
+     */
     public synchronized boolean consumeGrass(int amount) {
         if (grass >= amount) {
             grass -= amount;

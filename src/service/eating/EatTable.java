@@ -1,4 +1,4 @@
-package service;
+package service.eating;
 
 import model.AnimalKind;
 

@@ -13,8 +13,4 @@ public class Boar extends Herbivore {
         return new Boar(x, y);
     }
 
-    @Override
-    public void eat() {
-
-    }
 }
